@@ -1,0 +1,5 @@
+body{font-family:Arial,sans-serif;margin:20px;}
+input{padding:5px;margin:5px 0;}
+button{padding:5px 10px;cursor:pointer;}
+#menu div{border:1px solid #ccc;padding:10px;margin:5px 0;}
+#message{margin-top:10px;}
