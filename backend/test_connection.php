@@ -1,14 +1,10 @@
 <?php
-$host = "localhost";
-$dbname = "food_ordering_system1";
-$username = "root";
-$password = "";
+require 'db_connect.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Database connection successful!";
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    $stmt = $pdo->query("SELECT NOW() as time");
+    $row = $stmt->fetch();
+    echo "Database connected successfully! Current time: " . $row['time'];
+} catch(PDOException $e) {
+    echo "Database connection failed: " . $e->getMessage();
 }
-?>
