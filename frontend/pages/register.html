@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+
+    <div id="msg" class="message"></div>
+
+    <input type="text" id="full_name" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="registerUser()">Register</button>
+
+    <p>Already have an account?
+        <a href="login.html">Login</a>
+    </p>
+</div>
+
+<script>
+function registerUser() {
+    const full_name = document.getElementById("full_name").value.trim();
+    const email     = document.getElementById("email").value.trim();
+    const password  = document.getElementById("password").value;
+
+    const msg = document.getElementById("msg");
+
+    if (!full_name || !email || !password) {
+        msg.innerHTML = "<span class='error'>All fields are required</span>";
+        return;
+    }
+
+    fetch("../../backend/auth/register.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name, email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            msg.innerHTML = "<span class='success'>" + data.message + "</span>";
+            setTimeout(() => window.location = "login.html", 1500);
+        } else {
+            msg.innerHTML = "<span class='error'>" + data.message + "</span>";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
