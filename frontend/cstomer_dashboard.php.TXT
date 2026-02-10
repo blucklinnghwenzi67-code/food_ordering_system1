@@ -1,0 +1,23 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
+    header("Location: login.html");
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Dashboard</title>
+</head>
+<body>
+
+<h2>Welcome, <?php echo $_SESSION['full_name']; ?></h2>
+
+<form action="../backend/logout.php" method="POST">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>
