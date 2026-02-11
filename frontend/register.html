@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, sans-serif;
+    background: linear-gradient(135deg,#ff6a00,#ee0979);
+}
+.card{
+    background:#fff;
+    width:380px;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+.card h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#ee0979;
+}
+.card input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+.card button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+    color:#fff;
+    background:linear-gradient(to right,#ff6a00,#ee0979);
+}
+.card button:hover{
+    opacity:0.9;
+}
+#msg{
+    text-align:center;
+    margin-bottom:15px;
+    font-size:14px;
+}
+.success{color:green;}
+.error{color:red;}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+    <div id="msg"></div>
+
+    <input id="name" placeholder="Full Name">
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+</div>
+
+<script>
+function register(){
+    const msg = document.getElementById("msg");
+
+    const full_name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if(full_name=="" || email=="" || password==""){
+        msg.innerHTML="<span class='error'>All fields are required</span>";
+        return;
+    }
+
+    fetch("../backend/auth/register.php",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({full_name,email,password})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.status=="success"){
+            msg.innerHTML="<span class='success'>"+data.message+"</span>";
+            document.getElementById("name").value="";
+            document.getElementById("email").value="";
+            document.getElementById("password").value="";
+        } else {
+            msg.innerHTML="<span class='error'>"+data.message+"</span>";
+        }
+    })
+    .catch(err=>{
+        console.error(err);
+        msg.innerHTML="<span class='error'>Server error</span>";
+    });
+}
+</script>
+
+</body>
+</html>
